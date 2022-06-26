@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+   "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<package name="default" extends="json-default" namespace="/">
+	
+			<action name="CheckUser"
+				class="com.siddharth.action.CheckUserDetail" 
+				method="checkUserDetail">
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			
+			</action>
+			
+			<action name="MovieDetail"
+				class="com.siddharth.action.FetchMovieDetail" 
+				method="getMovieDetail">
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			</action>
+			
+			<action name="AddMovieDetails"
+				class="com.siddharth.action.AddMovieDetail" 
+				method="addMovieDetails"
+				>
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			</action>
+			
+			<action name="DeleteMovies"
+				class="com.siddharth.action.DeleteMovieDetail" 
+				method="deleteFilmIds"
+				>
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			</action>
+			
+	</package>
+</struts>
