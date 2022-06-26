@@ -18,6 +18,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.siddharth.dao.MovieDAO;
 import com.siddharth.pojo.Language;
 import com.siddharth.pojo.MovieDetail;
+import com.siddharth.pojo.UserDetail;
 
 public class MovieDAOIMPL implements MovieDAO {
 	
@@ -173,16 +174,15 @@ public class MovieDAOIMPL implements MovieDAO {
 	@Override
 	public String checkUserDetail(String email, String password) {
 		Transaction tx = null;
-		Session session=null; 
+		Session session = null; 
 		System.out.print(email + " " + password);
 		try {
 			
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			String hql = "Select Count(*) from user where email=:email_id and password=:pass";
+			String hql = "Select Count(*) from user where email=:email_id";
 			Query query = session.createQuery(hql);
 			query.setString("email_id", email);
-			query.setString("pass", password);
 			
 			int res = ((Long) query.list().get(0)).intValue();
 			if(res == 0)
@@ -210,6 +210,58 @@ public class MovieDAOIMPL implements MovieDAO {
 		}
 		return "success";
 		
+	}
+
+	@Override
+	public String registerUserDetail(String email, String password) {
+		Transaction tx = null;
+		Session session = null; 
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			
+			UserDetail userDetail = new UserDetail();
+			userDetail.setEmail(email);
+			userDetail.setPassword(password);
+			
+			try {
+				String hql = "Select Count(*) from user where email=:email_id";
+				Query query = session.createQuery(hql);
+				query.setString("email_id", email);
+				
+				int res = ((Long) query.list().get(0)).intValue();
+				if(res == 0)
+					session.save(userDetail);
+				else
+					return "failed";
+					
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			tx.commit();
+			
+			
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+			return "failed";
+		}
+		finally
+		{
+			if(session!=null) {
+				try
+				{
+					session.close();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		return "success";
 	}
 
 

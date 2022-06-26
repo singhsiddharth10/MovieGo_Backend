@@ -40,4 +40,9 @@ public class MovieManagerIMPL implements MovieManager{
 		return movieDAO.checkUserDetail(email, password);
 	}
 
+	@Override
+	public String registerUserDetail(String email, String password) {
+		return movieDAO.registerUserDetail(email, password);
+	}
+
 }

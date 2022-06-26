@@ -12,7 +12,14 @@
 			<result name="success" type="json"> 
 				<param name = "root">json</param> 
 			</result>
+			</action>
 			
+			<action name="RegisterUser"
+				class="com.siddharth.action.RegisterUser" 
+				method="registerUserDetail">
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
 			</action>
 			
 			<action name="MovieDetail"
