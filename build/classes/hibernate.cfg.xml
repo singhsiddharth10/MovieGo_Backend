@@ -13,5 +13,6 @@
 		<mapping class="com.siddharth.pojo.MovieDetail"></mapping>
 		<mapping class="com.siddharth.pojo.Language"></mapping>
 		<mapping class="com.siddharth.pojo.UserDetail"></mapping>
+		<mapping class="com.siddharth.pojo.Message"></mapping>
 	</session-factory>
 </hibernate-configuration>

@@ -10,9 +10,8 @@ import javax.persistence.Id;
 public class UserDetail {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="user_id")
-	private int userId;
+	private String userId;
 	
 	
 	@Column(name="email_id")
@@ -20,10 +19,10 @@ public class UserDetail {
 	@Column(name="password")
 	private String password;
 	
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	

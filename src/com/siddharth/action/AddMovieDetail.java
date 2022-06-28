@@ -102,7 +102,7 @@ public class AddMovieDetail {
 			
 			try {
 				MovieManager movieManager = (MovieManager) context.getBean("MovieManager");
-				json = movieManager.addMovieDetails(title,description,releaseYear,language,rentalDuration,rentalRate,length,replacementCost,rating,specialFeatures,director);
+				//json = movieManager.addMovieDetails(title,description,releaseYear,language,rentalDuration,rentalRate,length,replacementCost,rating,specialFeatures,director);
 			}catch(Exception e) {
 				e.printStackTrace();
 				json = "failure";

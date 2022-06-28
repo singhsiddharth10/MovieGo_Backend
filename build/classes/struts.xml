@@ -30,6 +30,22 @@
 			</result>
 			</action>
 			
+			<action name="Message"
+				class="com.siddharth.action.FetchMessage" 
+				method="getMessage">
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			</action>
+			
+			<action name="AddMessage"
+				class="com.siddharth.action.AddMessage" 
+				method="addMessage">
+			<result name="success" type="json"> 
+				<param name = "root">json</param> 
+			</result>
+			</action>
+			
 			<action name="AddMovieDetails"
 				class="com.siddharth.action.AddMovieDetail" 
 				method="addMovieDetails"

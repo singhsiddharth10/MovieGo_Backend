@@ -7,20 +7,22 @@ import com.siddharth.manager.MovieManager;
 
 public class CheckUserDetail  {
 	
-	private String email;
+	private String userId;
 	private String password;
 	private String json;
 	
 
+	
 
-	public String getEmail() {
-		return email;
+
+	public String getUserId() {
+		return userId;
 	}
 
 
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 
@@ -52,7 +54,7 @@ public class CheckUserDetail  {
 	public String checkUserDetail () {
 		ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 		MovieManager movieManager = (MovieManager) context.getBean("MovieManager");
-		json = movieManager.checkUserDetail(email, password);
+		json = movieManager.checkUserDetail(userId, password);
 		System.out.print(json);
 		if(!json.isEmpty()) {
 			return "success";

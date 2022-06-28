@@ -17,6 +17,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.siddharth.dao.MovieDAO;
 import com.siddharth.pojo.Language;
+import com.siddharth.pojo.Message;
 import com.siddharth.pojo.MovieDetail;
 import com.siddharth.pojo.UserDetail;
 
@@ -42,7 +43,7 @@ public class MovieDAOIMPL implements MovieDAO {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
 			
-			MovieDetail = session.createQuery("from film where isDelete = 0").list();
+			MovieDetail = session.createQuery("from film").list();
 				
 			tx.commit();
 			//session.close();
@@ -105,84 +106,84 @@ public class MovieDAOIMPL implements MovieDAO {
 		return "success";
 	}
 
-	@Override
-	public String addMovieDetails(String title, String description, int releaseYear, String language,
-			int rentalDuration, double rentalRate, int length, double replacementCost, String rating,
-			String specialFeatures, String director) {
-		Transaction tx = null;
-		Session session=null; 
+//	@Override
+//	public String addMovieDetails(String title, String description, int releaseYear, String language,
+//			int rentalDuration, double rentalRate, int length, double replacementCost, String rating,
+//			String specialFeatures, String director) {
+//		Transaction tx = null;
+//		Session session=null; 
+//
+//		try {
+//			
+//			
+//			session = sessionFactory.openSession();
+//			tx = session.beginTransaction();
+//		
+//			MovieDetail MovieDetail = new MovieDetail();
+//			
+//			MovieDetail.setTitle(title);
+//			MovieDetail.setDescription(description);
+//			MovieDetail.setReleaseYear(releaseYear);
+//			MovieDetail.setRentalDuration(rentalDuration);
+//			MovieDetail.setRentalRate(rentalRate);
+//			String hql = "from language where name=:name";
+//			Query query = session.createQuery(hql);
+//			
+//			query.setString("name", language);
+//			ArrayList<Language> lang = (ArrayList<Language>) query.list();
+//			
+//			MovieDetail.setLanguage(lang.get(0));
+//			
+//			MovieDetail.setLength(length);
+//			MovieDetail.setReplacementCost(replacementCost);
+//			MovieDetail.setRating(rating);
+//			MovieDetail.setSpecialFeatures(specialFeatures);
+//			MovieDetail.setDirector(director);
+//			
+//			try {
+//				session.save(MovieDetail);
+//			}catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//			tx.commit();
+//		
+//			
+//		} catch (Exception e) {
+//			if (tx != null) {
+//				tx.rollback();
+//			}
+//			e.printStackTrace();
+//			return "failed";
+//		}
+//		finally
+//		{
+//			if(session!=null) {
+//				try
+//				{
+//					session.close();
+//				}
+//				catch(Exception e)
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return "success";
+//	}
 
-		try {
-			
-			
-			session = sessionFactory.openSession();
-			tx = session.beginTransaction();
-		
-			MovieDetail MovieDetail = new MovieDetail();
-			
-			MovieDetail.setTitle(title);
-			MovieDetail.setDescription(description);
-			MovieDetail.setReleaseYear(releaseYear);
-			MovieDetail.setRentalDuration(rentalDuration);
-			MovieDetail.setRentalRate(rentalRate);
-			String hql = "from language where name=:name";
-			Query query = session.createQuery(hql);
-			
-			query.setString("name", language);
-			ArrayList<Language> lang = (ArrayList<Language>) query.list();
-			
-			MovieDetail.setLanguage(lang.get(0));
-			
-			MovieDetail.setLength(length);
-			MovieDetail.setReplacementCost(replacementCost);
-			MovieDetail.setRating(rating);
-			MovieDetail.setSpecialFeatures(specialFeatures);
-			MovieDetail.setDirector(director);
-			
-			try {
-				session.save(MovieDetail);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			tx.commit();
-		
-			
-		} catch (Exception e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			e.printStackTrace();
-			return "failed";
-		}
-		finally
-		{
-			if(session!=null) {
-				try
-				{
-					session.close();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		return "success";
-	}
-
 	@Override
-	public String checkUserDetail(String email, String password) {
+	public String checkUserDetail(String userId, String password) {
 		Transaction tx = null;
 		Session session = null; 
-		System.out.print(email + " " + password);
+		System.out.print(userId + " " + password);
 		try {
 			
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
-			String hql = "Select Count(*) from user where email=:email_id";
+			String hql = "Select Count(*) from user where user_id=:userId";
 			Query query = session.createQuery(hql);
-			query.setString("email_id", email);
+			query.setString("userId", userId);
 			
 			int res = ((Long) query.list().get(0)).intValue();
 			if(res == 0)
@@ -213,7 +214,7 @@ public class MovieDAOIMPL implements MovieDAO {
 	}
 
 	@Override
-	public String registerUserDetail(String email, String password) {
+	public String registerUserDetail(String userId,String email, String password) {
 		Transaction tx = null;
 		Session session = null; 
 		try {
@@ -221,6 +222,7 @@ public class MovieDAOIMPL implements MovieDAO {
 			tx = session.beginTransaction();
 			
 			UserDetail userDetail = new UserDetail();
+			userDetail.setUserId(userId);
 			userDetail.setEmail(email);
 			userDetail.setPassword(password);
 			
@@ -237,6 +239,7 @@ public class MovieDAOIMPL implements MovieDAO {
 					
 			}catch (Exception e) {
 				e.printStackTrace();
+				return "failed";
 			}
 			
 			tx.commit();
@@ -245,7 +248,7 @@ public class MovieDAOIMPL implements MovieDAO {
 		}catch (Exception e) {
 			
 			e.printStackTrace();
-			return "failed";
+			
 		}
 		finally
 		{
@@ -262,6 +265,107 @@ public class MovieDAOIMPL implements MovieDAO {
 			
 		}
 		return "success";
+	}
+
+	@Override
+	public List<Message> getMessage(String movieId) {
+		Transaction tx = null;
+		Session session=null; 
+		System.out.print(movieId);
+		
+		List<Message> message = new ArrayList<>();
+		
+		try {
+			
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			
+			String hql = "FROM message WHERE film_id =:movieId";
+			Query query = session.createQuery(hql);
+			query.setString("movieId", movieId);
+			message =  query.list();
+			
+			
+				
+			tx.commit();
+		
+			
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+			return null;
+		}
+		finally
+		{
+			if(session!=null) {
+				try
+				{
+					session.close();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		return message;
+	}
+
+	@Override
+	public String addMessage(String message, String userId, int movieId) {
+		Transaction tx = null;
+		Session session = null; 
+		Message m = new Message();
+		System.out.println(message + " " + userId + " " + movieId);
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+//			
+//			UserDetail user = new UserDetail();
+//			user.setUserId(userId);
+//			
+//			MovieDetail movie = new MovieDetail();
+//			movie.setFilmId(movieId);
+//			
+			m.setMessage(message);
+			m.setUserId(userId);
+			m.setFilm_id(movieId);
+			
+			
+			try {
+				session.save(m);
+			}catch (Exception e) {
+				e.printStackTrace();
+				return "failed";
+			}
+			
+			tx.commit();
+			
+		
+			
+		}catch(Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+			return null;
+		}finally
+		{
+			if(session!=null) {
+				try
+				{
+					session.close();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		return "success";
+		
 	}
 
 
